@@ -1,0 +1,10 @@
+services:
+  ml_core:
+    image: .
+    ports:
+      - "5017:8000"
+    volumes:
+      - "data:data"
+
+volumes:
+  data:
