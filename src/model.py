@@ -1,9 +1,10 @@
-from os import PathLike
-from fire import Fire
 import logging
+from os import PathLike
 
-from src.config_and_utils.utils import init_logging
+from fire import Fire
+
 from src.config_and_utils.config import TrainPipelineConfig
+from src.config_and_utils.utils import init_logging
 from src.core.train_pipeline import TrainPipeline
 from src.dataset_preparation.dataset_preparation_pipeline import DatasetPreparationPipeline
 

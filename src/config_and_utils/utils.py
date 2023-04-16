@@ -33,4 +33,3 @@ def check_model(model, image_size, device):
         (2, 3, image_size[0], image_size[1]),
         device=device
     ))
-

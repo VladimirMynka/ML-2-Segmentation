@@ -2,11 +2,11 @@ import os
 import random
 import typing as t
 
+import cv2
 import numpy as np
 import torch
-from torch.utils.data import Dataset
 import torchvision.transforms.functional as transforms_t
-import cv2
+from torch.utils.data import Dataset
 
 
 class ImageDataset(Dataset):

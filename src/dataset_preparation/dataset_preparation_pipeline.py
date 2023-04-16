@@ -4,8 +4,8 @@ import os
 
 import cv2
 import numpy as np
-from tqdm import tqdm
 from fire import Fire
+from tqdm import tqdm
 
 from src.config_and_utils.config import DataPreparationConfig
 

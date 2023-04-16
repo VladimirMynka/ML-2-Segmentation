@@ -14,6 +14,7 @@ class LoggerConfig:
     format: str = "[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s"
     date_format: str = "%d/%b/%Y %H:%M:%S"
 
+
 @dataclass
 class DataPreparationConfig:
     dataset_path: Path = root / 'data' / 'dataset'
@@ -51,7 +52,7 @@ class TrainPipelineConfig:
 
     dataset_path: os.PathLike | str = None
     batch_size: int = 2
-    n_epochs: int = 1
+    n_epochs: int = 20
     device: str = 'cpu'
 
     metric_name: str = 'iou'  # 'iou' | 'dice'
