@@ -3,9 +3,10 @@ from os import PathLike
 
 from fire import Fire
 
-from src.config_and_utils.config import TrainPipelineConfig
+from src.config_and_utils.config import TrainPipelineConfig, EvaluatePipelineConfig
 from src.config_and_utils.utils import init_logging
-from src.core.train_pipeline import TrainPipeline
+from src.core.pipelines.train_pipeline import TrainPipeline
+from src.core.pipelines.evaluate_pipeline import EvaluatePipeline
 from src.dataset_preparation.dataset_preparation_pipeline import DatasetPreparationPipeline
 
 
@@ -25,13 +26,17 @@ class CLI:
         trainer = TrainPipeline(self.logger, config)
         trainer.run()
 
-    def evaluate(self, dataset: PathLike):
+    def evaluate(self, dataset: PathLike | str = None):
         """
         Receives the dataset folder. Loads the model from ./data/model/. Evaluates the model with the provided dataset,
         prints the results and saves it to the log
         :param dataset: path to evaluating dataset contains folder with images and json description
         """
-        pass
+        config = EvaluatePipelineConfig()
+        if dataset is not None:
+            config.dataset_path = dataset
+        evaluater = EvaluatePipeline(self.logger, config)
+        evaluater.run()
 
     def demo(self, video: PathLike):
         """

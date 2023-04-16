@@ -1,5 +1,5 @@
 # ML-2-Segmentation
-### Task
+## Task
 It is a real life industry task. [This video](https://homeassistant.bramble1.duckdns.org/local/clodding_train.avi) contains the outcome from a clodding machine. It grinds the soil or rocks and turns them into equally-sized clods, which are passed to the next step in the production chain. When the clodding machine malfunctions, it produces abnormally big clods which may damage the next machine and disable the entire chain.
 
 Our task is to implement an online diagnostic system based on Computer Vision. The customer wants the system to
@@ -8,7 +8,7 @@ Our task is to implement an online diagnostic system based on Computer Vision. T
 - Estimate the number of them in each frame
 - Estimate the size of the biggest one in the frame.
 
-### Model and methods
+## Model and methods
 We will solve this problem as semantic segmentation task. 
 Model that will be used is [deeplabv3](https://pytorch.org/vision/main/models/deeplabv3.html) which can be used with torchvision library.
 
@@ -21,7 +21,7 @@ Separated clods are been detecting on postprocessing step.
 If some clods stuck together they will be detected as one clod. Their separating 
 
 
-### Prepare dataset
+## Prepare dataset
 
 To prepare dataset you should do next steps:
 
@@ -40,8 +40,8 @@ So, on our mind, it's better to extract source frames directly from video
 It will consist of `train` and `val` parts with `x` and `y` folders
 
 
-### Train
-For train model, run next command from root of project
+## Train
+For train model, run next command from root of project (after dataset preparation)
 ```
 python -m src.cli train
 ```
@@ -73,13 +73,29 @@ Next table contains best values for loss and metrics:
 
 | Train or Val  | Loss or Metric | Value |
 |---------------|----------------|-------|
-| Train         | Loss           | 1.00  |
-|               | Metric         | 0.00  |
-| Val           | Loss           | 1.00  |
-|               | Metric         | 0.00  |
+| Train         | Loss           | 0.28  |
+|               | Metric         | 0.65  |
+| Val           | Loss           | 0.26  |
+|               | Metric         | 0.79  |
 
 
-### Sources
+## Evaluate
+For evaluating [prepare dataset](#prepare-dataset) and run
+```
+python -m src.cli evaluate
+```
+Then check data/log_file.log to see `size MSE` and count `count MSE`. 
+You should remember that MSE is a square of RMSE so if you get MSE equals 4 then
+mean error is about 2.
+
+Actual metrics:
+
+|  *Size MSE*  |  *Count MSE*  |
+|:------------:|:-------------:|
+|     5.77     |     3.342     |
+
+
+## Sources
 - [Torchvision](https://pytorch.org/vision/main/models.html) - helped to find and use pretrained model
 - [Document Segmentation Using Deep Learning in PyTorch](https://learnopencv.com/deep-learning-based-document-segmentation-using-semantic-segmentation-deeplabv3-on-custom-dataset/#Custom-Training-Document-Segmentation-Model) - examples of training code, loss functions and metrics
 - [ChatGPT](https://chat.openai.com/) - helped to write visualization code

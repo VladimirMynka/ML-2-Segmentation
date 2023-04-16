@@ -6,3 +6,4 @@ numpy~=1.23.3
 torch~=2.0.0
 torchvision~=0.15.1
 torchmetrics~=0.10.0
+scipy~=1.8.0
