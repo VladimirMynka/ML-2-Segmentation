@@ -80,7 +80,19 @@ Next table contains best values for loss and metrics:
 
 
 ## Evaluate
+For evaluating [prepare dataset](#prepare-dataset) and run
+```
+python -m src.cli evaluate
+```
+Then check data/log_file.log to see `size MSE` and count `count MSE`. 
+You should remember that MSE is a square of RMSE so if you get MSE equals 4 then
+mean error is about 2.
 
+Actual metrics:
+
+|  *Size MSE*  |  *Count MSE*  |
+|:------------:|:-------------:|
+|     5.77     |     3.342     |
 
 
 ## Sources

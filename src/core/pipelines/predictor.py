@@ -37,8 +37,9 @@ class Predictor:
         return out.numpy().astype(np.uint8), image_model_np
 
     def predict_count_and_the_biggest_size(self, image: np.uint8):
-        masks, _ = self.get_mask(image)
+        masks, _ = self.get_mask(image)  # (1, 2, im_size, im_size)
         mask = masks[0, 1]
+        mask = cv2.cvtColor(255 - mask, cv2.COLOR_GRAY2RGB)
         mask[mask > 100] = 255
         mask[mask <= 100] = 0
         return self.calculate_count_and_the_biggest_size_by_mask(mask)
