@@ -18,8 +18,10 @@ from src.core.transforms import get_train_transforms, get_common_transforms
 
 
 class TrainPipeline:
-    def __init__(self, logger: Logger):
-        self.config = TrainPipelineConfig()
+    def __init__(self, logger: Logger, config: TrainPipelineConfig = None):
+        self.config = config
+        if self.config is None:
+            self.config = TrainPipelineConfig()
         self.data_config = self.config.data_preparation_config
         self.model_config = self.config.model_config
         self.transforms_config = self.config.transforms_config
@@ -29,19 +31,24 @@ class TrainPipeline:
         self.logger = logger
 
     def run(self):
+        self.logger.info("Init model...")
         model = Model(self.model_config).to(self.device)
 
         # Check all is OK
         check_model(model, self.transforms_config.image_size, self.device)
+        self.logger.info("Model test succeed")
 
+        self.logger.info("Load data...")
         train_loader, valid_loader = self._init_data()
-        use_dice = True if self.config.metric_name == "dice" else False
 
+        use_dice = True if self.config.metric_name == "dice" else False
         metric_fn = IoUMetric(num_classes=self.model_config.n_classes, use_dice=use_dice).to(self.device)
         loss_fn = BCEAndIouLoss(use_dice=use_dice).to(self.device)
         optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
 
+        self.logger.info("Start train pipeline...")
         self.train(model, train_loader, valid_loader, optimizer, loss_fn, metric_fn)
+        self.logger.info("Train pipeline ended.")
 
     def _init_data(self) -> t.Tuple[DeviceDataLoader, DeviceDataLoader]:
         train_path_x, train_path_y, valid_path_x, valid_path_y = self._get_folders()
@@ -67,7 +74,10 @@ class TrainPipeline:
         return train_loader, valid_loader
 
     def _get_folders(self):
-        dataset_path = get_last_dataset(self.config.data_preparation_config.dataset_path)
+        if self.config.dataset_path is None:
+            dataset_path = get_last_dataset(self.config.data_preparation_config.dataset_path)
+        else:
+            dataset_path = self.config.dataset_path
 
         valid_path_x = os.path.join(dataset_path, "val", "x")
         valid_path_y = os.path.join(dataset_path, "val", "y")
@@ -136,7 +146,8 @@ class TrainPipeline:
 
             if valid_metric >= best_metric:
                 self.logger.info("\nSaving model.....")
-                torch.save(model.state_dict(), self.model_config.save_path)
+                os.makedirs(self.model_config.save_path, exist_ok=True)
+                torch.save(model.state_dict(), os.path.join(self.model_config.save_path, "best_model.pt"))
                 best_metric = valid_metric
 
         return logs

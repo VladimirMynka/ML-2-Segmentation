@@ -1,9 +1,18 @@
+import os
 import typing as t
 from dataclasses import dataclass
 from pathlib import Path
 
 root = Path(__file__).parent.parent.parent
 
+
+@dataclass
+class LoggerConfig:
+    log_file: os.PathLike | str = root / 'data' / 'log_file.log'
+    encoding: str = 'utf-8'
+    level: str = 'INFO'
+    format: str = "[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s"
+    date_format: str = "%d/%b/%Y %H:%M:%S"
 
 @dataclass
 class DataPreparationConfig:
@@ -40,8 +49,9 @@ class TrainPipelineConfig:
     model_config: ModelConfig = ModelConfig()
     transforms_config: TransformsConfig = TransformsConfig()
 
+    dataset_path: os.PathLike | str = None
     batch_size: int = 2
-    n_epochs: int = 20
+    n_epochs: int = 1
     device: str = 'cpu'
 
     metric_name: str = 'iou'  # 'iou' | 'dice'
