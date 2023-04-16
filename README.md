@@ -1,5 +1,27 @@
 # ML-2-Segmentation
-## Prepare dataset
+### Task
+It is a real life industry task. [This video](https://homeassistant.bramble1.duckdns.org/local/clodding_train.avi) contains the outcome from a clodding machine. It grinds the soil or rocks and turns them into equally-sized clods, which are passed to the next step in the production chain. When the clodding machine malfunctions, it produces abnormally big clods which may damage the next machine and disable the entire chain.
+
+Our task is to implement an online diagnostic system based on Computer Vision. The customer wants the system to
+
+- Detect abnormal clods
+- Estimate the number of them in each frame
+- Estimate the size of the biggest one in the frame.
+
+### Model and methods
+We will solve this problem as semantic segmentation task. 
+Model that will be used is [deeplabv3](https://pytorch.org/vision/main/models/deeplabv3.html) which can be used with torchvision library.
+
+Important metric for our model is a speed, 
+so we use [MobileNet](https://pytorch.org/vision/main/models/generated/torchvision.models.segmentation.deeplabv3_mobilenet_v3_large.html#torchvision.models.segmentation.deeplabv3_mobilenet_v3_large) 
+as backbone model
+
+Segmentation task includes only transformation image to mask. 
+Separated clods are been detecting on postprocessing step.
+If some clods stuck together they will be detected as one clod. Their separating 
+
+
+### Prepare dataset
 
 To prepare dataset you should do next steps:
 
@@ -11,8 +33,53 @@ So, on our mind, it's better to extract source frames directly from video
 4. Set split_k for data splitting (train and validation parts) in `src/config_and_utils/config.py`
 5. From root of this project, run
     ```
-    python -m src.dataset_preparation.main run --movie_name=<your movie name>
+    python -m src.cli prepare_dataset --movie_name=<your movie name>
     ```
    (or you can set movie_name in the config)
 6. Your dataset will be named as current datetime `data/dataset/<datetime>`. 
 It will consist of `train` and `val` parts with `x` and `y` folders
+
+
+### Train
+For train model, run next command from root of project
+```
+python -m src.cli train
+```
+All parameters will be got from src.config_and_utils.config.TrainPipelineConfig 
+but you can rewrite dataset path in command line:
+```
+python -m src.cli train --dataset=path/to/dataset
+```
+
+Model will be trained and put into `data/model` (by default)
+
+Next table contains actual set of hyperparameters:
+
+| *Hyperparameter*                               | *Value*                                                                                                                |
+|------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| Model                                          | deeplabv3                                                                                                              |
+| Backbone                                       | MobileNet_V3_Large                                                                                                     |
+| Loss function                                  | Binary Cross entropy + Intersection over union <br> (BCE + IoU)                                                        |
+| Train metric <br> (used for choice best model) | Intersection over union (IoU)                                                                                          |
+| Optimizer                                      | Adam                                                                                                                   |
+| Learning rate                                  | 0.0001                                                                                                                 |
+| Batch size                                     | 2                                                                                                                      |
+| Number of epochs                               | 20                                                                                                                     |
+| Image size                                     | (384, 384)                                                                                                             |
+| Number of channels                             | 2 (includes background)                                                                                                |
+| Random affine transformations                  | Rotates (-15 - 15 degrees), <br/>Translate (-30 - 30 pixels for each axis), <br/> Vertical Flip, <br/> Horizontal Flip |
+
+Next table contains best values for loss and metrics:
+
+| Train or Val  | Loss or Metric | Value |
+|---------------|----------------|-------|
+| Train         | Loss           | 1.00  |
+|               | Metric         | 0.00  |
+| Val           | Loss           | 1.00  |
+|               | Metric         | 0.00  |
+
+
+### Sources
+- [Torchvision](https://pytorch.org/vision/main/models.html) - helped to find and use pretrained model
+- [Document Segmentation Using Deep Learning in PyTorch](https://learnopencv.com/deep-learning-based-document-segmentation-using-semantic-segmentation-deeplabv3-on-custom-dataset/#Custom-Training-Document-Segmentation-Model) - examples of training code, loss functions and metrics
+- [ChatGPT](https://chat.openai.com/) - helped to write visualization code

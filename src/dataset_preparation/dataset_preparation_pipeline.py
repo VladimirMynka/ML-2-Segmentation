@@ -4,8 +4,8 @@ import os
 
 import cv2
 import numpy as np
-from tqdm import tqdm
 from fire import Fire
+from tqdm import tqdm
 
 from src.config_and_utils.config import DataPreparationConfig
 
@@ -110,7 +110,7 @@ class DatasetPreparationPipeline:
         source_image_id = self.validation_id_to_frame_id[last_index]
         source_image = self.frame_id_to_frame[source_image_id]
 
-        folder = 'train' if last_index < self.config.split_k * self.max_index else 'val'
+        folder = 'train' if source_image_id < self.config.split_k * self.max_index else 'val'
 
         cv2.imwrite(str(save_path / folder / 'y' / f"{source_image_id}_{last_index}.png"), img)
         cv2.imwrite(str(save_path / folder / 'x' / f"{source_image_id}_{last_index}.png"), source_image)
