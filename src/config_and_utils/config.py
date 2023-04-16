@@ -56,3 +56,14 @@ class TrainPipelineConfig:
     device: str = 'cpu'
 
     metric_name: str = 'iou'  # 'iou' | 'dice'
+
+
+class EvaluatePipelineConfig:
+    data_preparation_config: DataPreparationConfig = DataPreparationConfig()
+    model_config: ModelConfig = ModelConfig()
+    transforms_config: TransformsConfig = TransformsConfig()
+
+    dataset_path: os.PathLike | str = None
+    device: str = 'cpu'
+
+    clod_size_threshold: float = 0.5

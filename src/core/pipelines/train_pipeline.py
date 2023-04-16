@@ -9,12 +9,12 @@ from tqdm import tqdm
 
 from src.config_and_utils.config import TrainPipelineConfig
 from src.config_and_utils.utils import get_last_dataset, check_model
-from src.core.device_data_loader import DeviceDataLoader
-from src.core.image_dataset import ImageDataset
+from src.core.data_utilities.device_data_loader import DeviceDataLoader
+from src.core.data_utilities.image_dataset import ImageDataset
 from src.core.losses.bce_iou_loss import BCEAndIouLoss
 from src.core.losses.iou_metric import IoUMetric
-from src.core.model import Model
-from src.core.transforms import get_train_transforms, get_common_transforms
+from src.core.models.model import Model
+from src.core.data_utilities.transforms import get_train_transforms, get_common_transforms
 
 
 class TrainPipeline:
