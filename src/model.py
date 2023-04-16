@@ -3,6 +3,9 @@ from fire import Fire
 
 
 class CLI:
+    def __init__(self):
+        pass
+
     def train(self, dataset: PathLike) -> None:
         """
         Receives the dataset folder. Performs model training. Saves the artifacts to ./model/. Logs the results.
