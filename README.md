@@ -33,7 +33,7 @@ So, on our mind, it's better to extract source frames directly from video
 4. Set split_k for data splitting (train and validation parts) in `src/config_and_utils/config.py`
 5. From root of this project, run
     ```
-    python -m src.dataset_preparation.main run --movie_name=<your movie name>
+    python -m src.cli prepare_dataset --movie_name=<your movie name>
     ```
    (or you can set movie_name in the config)
 6. Your dataset will be named as current datetime `data/dataset/<datetime>`. 
@@ -43,12 +43,12 @@ It will consist of `train` and `val` parts with `x` and `y` folders
 ### Train
 For train model, run next command from root of project
 ```
-python -m src.model train
+python -m src.cli train
 ```
 All parameters will be got from src.config_and_utils.config.TrainPipelineConfig 
 but you can rewrite dataset path in command line:
 ```
-python -m src.model train --dataset=path/to/dataset
+python -m src.cli train --dataset=path/to/dataset
 ```
 
 Model will be trained and put into `data/model` (by default)
