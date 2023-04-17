@@ -43,6 +43,7 @@ class TransformsConfig:
     do_vertical_flip: bool = True
     do_horizontal_flip: bool = True
 
+
 @dataclass
 class EvaluatePipelineConfig:
     data_preparation_config: DataPreparationConfig = DataPreparationConfig()
@@ -69,3 +70,28 @@ class TrainPipelineConfig:
     do_evaluate: bool = True
 
     metric_name: str = 'iou'  # 'iou' | 'dice'
+
+
+@dataclass
+class ColorConfig:
+    bbox_color: t.Tuple[int, int, int] = (255, 0, 0)
+    text_color: t.Tuple[int, int, int] = (255, 255, 0)
+
+
+@dataclass
+class DemoPipelineConfig:
+    model_config: ModelConfig = ModelConfig()
+    transforms_config: TransformsConfig = TransformsConfig()
+
+    movie_path: str | os.PathLike = DataPreparationConfig.dataset_path / "movie.avi"
+    clod_size_threshold: float = 1
+    skip_frames: int = 3
+    size_type: str = 'source'  # 'model' | 'source'
+    source_size: t.Tuple[int, int] = (1280, 1028)
+    draw_mask: bool = True
+    save_video: bool | str = DataPreparationConfig.dataset_path / "processed.mp4"  # False or path to file
+
+    biggest_color_config: ColorConfig = ColorConfig(bbox_color=(0, 0, 255), text_color=(0, 255, 255))
+    usual_color_config: ColorConfig = ColorConfig(bbox_color=(255, 0, 0), text_color=(255, 255, 0))
+    biggest_text_bold: int = 2
+    usual_text_bold: int = 1

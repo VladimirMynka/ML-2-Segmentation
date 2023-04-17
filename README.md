@@ -84,15 +84,37 @@ For evaluating [prepare dataset](#prepare-dataset) and run
 ```
 python -m src.cli evaluate
 ```
+Or
+```
+python -m src.cli evaluate --dataset=path/to/dataset
+```
 Then check data/log_file.log to see `size MSE` and count `count MSE`. 
 You should remember that MSE is a square of RMSE so if you get MSE equals 4 then
 mean error is about 2.
 
 Actual metrics:
 
-|  *Size MSE*  |  *Count MSE*  |
-|:------------:|:-------------:|
-|     5.77     |     3.342     |
+| *Size MSE* | *Count MSE* |
+|:----------:|:-----------:|
+|   2.459    |    3.008    |
+
+
+## Demo
+Put your video file somewhere in project.
+Setting demo in src/config_and_utils/config.py (class DemoPipelineConfig)
+Run next command:
+```
+python -m src.cli demo [--video=<path to video>]
+```
+Will be started realtime demonstration. 
+To speed up it set in config `size_type='model'` or increase `skip_frames` value.
+30 frames per second can be achieved when `size_type` is 'model' and `skip_frames` is 5.
+
+It means that stream will have the same size as our model uses, 
+and mask will be created only for each 6th frame.
+
+Demo looks like this gif:
+![](./for_readme/video.gif)
 
 
 ## Sources

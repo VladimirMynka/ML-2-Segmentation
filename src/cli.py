@@ -3,11 +3,12 @@ from os import PathLike
 
 from fire import Fire
 
-from src.config_and_utils.config import TrainPipelineConfig, EvaluatePipelineConfig
+from src.config_and_utils.config import TrainPipelineConfig, EvaluatePipelineConfig, DemoPipelineConfig
 from src.config_and_utils.utils import init_logging
 from src.core.pipelines.train_pipeline import TrainPipeline
 from src.core.pipelines.evaluate_pipeline import EvaluatePipeline
 from src.dataset_preparation.dataset_preparation_pipeline import DatasetPreparationPipeline
+from src.demo.demo_pipeline import DemoPipeline
 
 
 class CLI:
@@ -38,12 +39,16 @@ class CLI:
         evaluater = EvaluatePipeline(self.logger, config)
         evaluater.run()
 
-    def demo(self, video: PathLike):
+    def demo(self, video: PathLike | str = None):
         """
         Runs real-time demo with provided image or video file
-        :return:
+        :param video: path to video that must be processed
         """
-        pass
+        config = DemoPipelineConfig()
+        if video is not None:
+            config.movie_path = video
+        demo = DemoPipeline(self.logger, config)
+        demo.run()
 
     @staticmethod
     def prepare_dataset(movie_name: str = None):
