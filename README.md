@@ -94,9 +94,9 @@ mean error is about 2.
 
 Actual metrics:
 
-|  *Size MSE*  |  *Count MSE*  |
-|:------------:|:-------------:|
-|     5.77     |     3.342     |
+| *Size MSE* | *Count MSE* |
+|:----------:|:-----------:|
+|   2.459    |    3.008    |
 
 
 ## Demo
