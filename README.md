@@ -114,6 +114,7 @@ It means that stream will have the same size as our model uses,
 and mask will be created only for each 6th frame.
 
 Demo looks like this gif:
+
 ![](./for_readme/video.gif)
 
 
