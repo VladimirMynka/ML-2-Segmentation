@@ -96,7 +96,7 @@ class DemoPipeline:
 
             # write the size near the bounding box
             cv2.putText(
-                img, f"{size:10.3f}", (x1, y1 - 5),
+                img, f"{size:10.3f}", (x1-30, y1),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, colors.text_color, drawing_size
             )
 
