@@ -84,9 +84,9 @@ class DemoPipelineConfig:
     transforms_config: TransformsConfig = TransformsConfig()
 
     movie_path: str | os.PathLike = DataPreparationConfig.dataset_path / "movie.avi"
-    clod_size_threshold: float = 0.1
-    skip_frames: int = 1
-    size_type: str = 'source'  # 'model' | 'source'
+    clod_size_threshold: float = 0.5
+    skip_frames: int = 3
+    size_type: str = 'model'  # 'model' | 'source'
     source_size: t.Tuple[int, int] = (1280, 1028)
     draw_mask: bool = False
     save_video: bool | str = DataPreparationConfig.dataset_path / "processed.mp4"  # False or path to file

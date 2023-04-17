@@ -70,7 +70,8 @@ class DemoPipeline:
             if self.config.save_video:
                 output.write(image)
 
-        output.release()
+        if self.config.save_video:
+            output.release()
         cv2.destroyAllWindows()
 
     def draw(self, predictor: Predictor, mask: np.uint8, img: np.uint8):

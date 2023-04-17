@@ -79,7 +79,7 @@ class Predictor:
         sizes = []
         for i in range(1, num_labels + 1):
             sh = labeled_array.shape
-            size = np.sum(labeled_array == i) // 3 / 10000
+            size = np.sum(labeled_array == i) // 3 / (sh[0] * sh[1]) * 1000
             sizes.append(size)
         the_biggest = np.argmax(sizes)
         return sizes, the_biggest
